@@ -1,0 +1,26 @@
+[
+  {
+    "__module__": "fdtdx.materials",
+    "__name__": "Air",
+    "electric_conductivity": 0.0,
+    "magnetic_conductivity": 0.0,
+    "permeability": 1.0,
+    "permittivity": 1.0
+  },
+  {
+    "__module__": "fdtdx.materials",
+    "__name__": "Silicon",
+    "electric_conductivity": 0.0,
+    "magnetic_conductivity": 0.0,
+    "permeability": 1.0,
+    "permittivity": 12.1
+  },
+  {
+    "__module__": "fdtdx.materials",
+    "__name__": "Silicon Dioxide",
+    "electric_conductivity": 0.0,
+    "magnetic_conductivity": 0.0,
+    "permeability": 1.0,
+    "permittivity": 2.1
+  }
+]
