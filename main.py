@@ -114,9 +114,15 @@ def parse_options() -> ServerOptions:
 # ---------------------------------------------------------------------------
 
 def resolve_favicon(opts: ServerOptions) -> str | None:
-    """Return the favicon path if it exists, else None (with a warning)."""
+    """Return the favicon value if usable, else None (with a warning).
+
+    - URLs (http:// / https://) are passed through as-is.
+    - Local paths are checked for existence; missing files produce a warning.
+    """
     if opts.favicon is None:
         return None
+    if opts.favicon.startswith(("http://", "https://")):
+        return opts.favicon
     favicon_path = pathlib.Path(opts.favicon)
     if not favicon_path.is_file():
         print(f"[config] No favicon found at {favicon_path!s} – skipping.\n")
