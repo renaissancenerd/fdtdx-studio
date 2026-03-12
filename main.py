@@ -39,7 +39,8 @@ class UIConfig:
     def to_nicegui_kwargs(self) -> dict:
         """Resolve favicon path, then return a dict ready for ui.run(**kwargs)."""
         favicon: Optional[str] = self.favicon or None
-        if favicon:
+        if favicon and not favicon.startswith(("http://", "https://")):
+            # Only validate local paths – URLs are passed through as-is
             p = pathlib.Path(favicon)
             if not p.is_file():
                 print(f"[config] favicon not found at {p} – skipping")
@@ -121,18 +122,16 @@ def _parse_args(argv: list[str] | None = None) -> tuple[UIConfig, bool]:
     return cfg, ns.dry_run
 
 
-# App
+# Page registration (module level)
 
-def _run(cfg: UIConfig) -> None:
-    from nicegui import ui                                        # deferred import
-    from fdtdx_studio.controller.main_controller import Controller
-    # from fdtdx_studio.ui.ui_view import View  # uncomment if needed at top level
+from nicegui import ui                                            # deferred – but module-level
+from fdtdx_studio.controller.main_controller import Controller
+# from fdtdx_studio.ui.ui_view import View  # uncomment if needed
 
-    @ui.page("/")
-    def index():
-        Controller()
 
-    ui.run(**cfg.to_nicegui_kwargs())
+@ui.page("/")
+def index():
+    Controller()
 
 
 # Entry point
@@ -149,7 +148,7 @@ def main(argv: list[str] | None = None) -> None:
             print(f"  {k:<28} = {v!r}")
         sys.exit(0)
 
-    _run(cfg)
+    ui.run(**cfg.to_nicegui_kwargs())
 
 
 if __name__ == "__main__":
